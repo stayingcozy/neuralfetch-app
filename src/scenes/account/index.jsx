@@ -1,6 +1,6 @@
 import SignOut from "../../components/SignOut";
 
-const Bar = () => {
+const Account = () => {
     return (
         <div>
           <h1>SubscriptionType(PuppyPro)</h1>
@@ -9,4 +9,4 @@ const Bar = () => {
       );
 };
 
-export default Bar;
+export default Account;

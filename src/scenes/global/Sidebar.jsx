@@ -97,8 +97,8 @@ const Sidebar = () => {
             )}
           </MenuItem>
 
-          {!isCollapsed && (
-            <Box mb="25px">
+          {/* {!isCollapsed && (
+            <Box mb="25px"> */}
               {/* <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
@@ -121,8 +121,8 @@ const Sidebar = () => {
                   SubscriptionType(PuppyPro)
                 </Typography> */}
               {/* </Box> */}
-            </Box>
-          )}
+            {/* </Box> */}
+          {/* )} */}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item

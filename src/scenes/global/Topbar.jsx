@@ -20,6 +20,10 @@ const Topbar = () => {
         navigate('/account');
     };
 
+    const handleSettingsMenuOpen = async () => {
+        navigate('/settings');
+    };
+
     return (
     <Box display="flex" justifyContent="space-between" p={2}>
 
@@ -47,7 +51,7 @@ const Topbar = () => {
             {/* <IconButton>
                 <NotificationsOutlinedIcons />
             </IconButton> */}
-            <IconButton>
+            <IconButton onClick={handleSettingsMenuOpen}>
                 <SettingsOutlinedIcons />
             </IconButton>
             <IconButton onClick={handleProfileMenuOpen}>

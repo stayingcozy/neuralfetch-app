@@ -19,6 +19,7 @@ import Enter from "./enter";
 import { AuthContextProvider } from "./components/AuthCheck";
 import Protected from "./components/Protected";
 import Account from "./scenes/account";
+import Settings from "./scenes/settings";
 
 function App() {
     const [theme, colorMode] = useMode();
@@ -41,6 +42,7 @@ function App() {
                       <Route path="/line" element={<Protected><Line /></Protected>} />
                       <Route path="/pending" element={<Protected><UserProfilePage /></Protected>} />
                       <Route path="/account" element={<Protected><Account /></Protected>} />
+                      <Route path="/settings" element={<Protected><Settings /></Protected>} />
                     </Routes>
                   </main>
                 </div>
