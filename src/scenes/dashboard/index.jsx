@@ -16,7 +16,7 @@ import ProgressCircle from "../../components/ProgressCircle";
 import CaddyDataFetch from '../../components/CaddyDataFetch';
 // import Card from "@material-ui/core/Card";
 import CardMedia from '@material-ui/core/CardMedia';
-import SignOut from "../../components/SignOut";
+// import SignOut from "../../components/SignOut";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -144,7 +144,7 @@ const Dashboard = () => {
         </Box>
       </Box>
       <CaddyDataFetch setHttpsSrcURL={setHttpsSrcURL} />
-      <SignOut />
+      {/* <SignOut /> */}
     </Box>
   );
 };

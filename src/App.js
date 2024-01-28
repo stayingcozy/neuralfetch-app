@@ -18,6 +18,7 @@ import UserProfilePage from "./scenes/pending";
 import Enter from "./enter";
 import { AuthContextProvider } from "./components/AuthCheck";
 import Protected from "./components/Protected";
+import Account from "./scenes/account";
 
 function App() {
     const [theme, colorMode] = useMode();
@@ -33,14 +34,13 @@ function App() {
                     <Topbar />
                     <Routes>
                       <Route path="/" element={<Enter />} />
-                      {/* <Route path="/enter" element={<Enter />} /> */}
                       <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
                       {/* <Route path="/calendar" element={<Protected><Calendar /></Protected>} /> */}
                       <Route path="/bar" element={<Protected><Bar /></Protected>} />
                       <Route path="/pie" element={<Protected><Pie /></Protected>} />
                       <Route path="/line" element={<Protected><Line /></Protected>} />
                       <Route path="/pending" element={<Protected><UserProfilePage /></Protected>} />
-                      {/* <Route path="/account" element={<Protected><Account /></Protected>} /> */}
+                      <Route path="/account" element={<Protected><Account /></Protected>} />
                     </Routes>
                   </main>
                 </div>

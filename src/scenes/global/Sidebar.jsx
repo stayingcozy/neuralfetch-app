@@ -108,7 +108,7 @@ const Sidebar = () => {
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box> */}
-              <Box textAlign="center">
+              {/* <Box textAlign="center"> */}
                 {/* <Typography
                   variant="h2"
                   color={colors.grey[100]}
@@ -117,10 +117,10 @@ const Sidebar = () => {
                 >
                   First LastName
                 </Typography> */}
-                <Typography variant="h5" color={colors.greenAccent[500]}>
+                {/* <Typography variant="h5" color={colors.greenAccent[500]}>
                   SubscriptionType(PuppyPro)
-                </Typography>
-              </Box>
+                </Typography> */}
+              {/* </Box> */}
             </Box>
           )}
 

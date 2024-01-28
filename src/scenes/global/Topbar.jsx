@@ -8,11 +8,17 @@ import DarkModeOutlinedIcons from "@mui/icons-material/DarkModeOutlined";
 import SettingsOutlinedIcons from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcons from "@mui/icons-material/PersonOutlined";
 // import SearchIcon from "@mui/icons-material/Search";
+import {  useNavigate } from 'react-router-dom';
 
 const Topbar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
+    const navigate = useNavigate();
+
+    const handleProfileMenuOpen = async () => {
+        navigate('/account');
+    };
 
     return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -44,7 +50,7 @@ const Topbar = () => {
             <IconButton>
                 <SettingsOutlinedIcons />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={handleProfileMenuOpen}>
                 <PersonOutlinedIcons />
             </IconButton>
         </Box>
