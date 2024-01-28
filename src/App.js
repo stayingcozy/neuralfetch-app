@@ -13,13 +13,17 @@ import Dashboard from "./scenes/dashboard";
 import Bar from "./scenes/bar";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
+import UserProfilePage from "./scenes/pending";
 // import Geography from "./scenes/geography";
-
+import Enter from "./enter";
+import { AuthContextProvider } from "./components/AuthCheck";
+import Protected from "./components/Protected";
 
 function App() {
     const [theme, colorMode] = useMode();
 
     return(
+      < AuthContextProvider >
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline /> {/* reset css */}
@@ -28,22 +32,21 @@ function App() {
                   <main className="content">
                     <Topbar />
                     <Routes>
-                      <Route path="/" element={<Dashboard />} />
-                      {/* <Route path="/team" element={<Team />} /> */}
-                      {/* <Route path="/contacts" element={<Contacts />} /> */}
-                      {/* <Route path="/invoices" element={<Invoices />} /> */}
-                      {/* <Route path="/form" element={<Form />} /> */}
-                      {/* <Route path="/calendar" element={<Calendar />} /> */}
-                      {/* <Route path="/faq" element={<FAQ />} /> */}
-                      <Route path="/bar" element={<Bar />} />
-                      <Route path="/pie" element={<Pie />} />
-                      <Route path="/line" element={<Line />} />
-                      {/* <Route path="/geography" element={<Geography />} /> */}
+                      <Route path="/" element={<Enter />} />
+                      {/* <Route path="/enter" element={<Enter />} /> */}
+                      <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+                      {/* <Route path="/calendar" element={<Protected><Calendar /></Protected>} /> */}
+                      <Route path="/bar" element={<Protected><Bar /></Protected>} />
+                      <Route path="/pie" element={<Protected><Pie /></Protected>} />
+                      <Route path="/line" element={<Protected><Line /></Protected>} />
+                      <Route path="/pending" element={<Protected><UserProfilePage /></Protected>} />
+                      {/* <Route path="/account" element={<Protected><Account /></Protected>} /> */}
                     </Routes>
                   </main>
                 </div>
             </ThemeProvider>
         </ColorModeContext.Provider>
+        </AuthContextProvider>
     );
 }
 
