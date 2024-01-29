@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+// import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 // import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 // import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 // import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
@@ -16,6 +17,7 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 // import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -133,10 +135,27 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-            <Item
+            {/* <Item
               title="Pending"
               to="/pending"
               icon={<BuildOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            /> */}
+
+            <Item 
+              title="Subscription"
+              to="/subscription"
+              icon={<CachedOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
+            
+            <Item 
+              title="Shop"
+              to="/shop"
+              icon={<ShoppingBasketOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />

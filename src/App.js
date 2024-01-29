@@ -13,13 +13,15 @@ import Dashboard from "./scenes/dashboard";
 import Bar from "./scenes/bar";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
-import UserProfilePage from "./scenes/pending";
+// import UserProfilePage from "./scenes/pending";
 // import Geography from "./scenes/geography";
 import Enter from "./enter";
 import { AuthContextProvider } from "./components/AuthCheck";
 import Protected from "./components/Protected";
 import Account from "./scenes/account";
 import Settings from "./scenes/settings";
+import Subscription from "./scenes/subscription";
+import UserCheckout from './scenes/shop';
 
 function App() {
     const [theme, colorMode] = useMode();
@@ -40,9 +42,11 @@ function App() {
                       <Route path="/bar" element={<Protected><Bar /></Protected>} />
                       <Route path="/pie" element={<Protected><Pie /></Protected>} />
                       <Route path="/line" element={<Protected><Line /></Protected>} />
-                      <Route path="/pending" element={<Protected><UserProfilePage /></Protected>} />
+                      {/* <Route path="/pending" element={<Protected><UserProfilePage /></Protected>} /> */}
                       <Route path="/account" element={<Protected><Account /></Protected>} />
                       <Route path="/settings" element={<Protected><Settings /></Protected>} />
+                      <Route path="/subscription" element={<Protected><Subscription /></Protected>} />
+                      <Route path="/shop" element={<Protected><UserCheckout /></Protected>} />
                     </Routes>
                   </main>
                 </div>

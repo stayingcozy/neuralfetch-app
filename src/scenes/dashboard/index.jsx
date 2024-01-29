@@ -17,12 +17,18 @@ import CaddyDataFetch from '../../components/CaddyDataFetch';
 // import Card from "@material-ui/core/Card";
 import CardMedia from '@material-ui/core/CardMedia';
 // import SignOut from "../../components/SignOut";
+import PostCreation from "../../components/PostCreation";
+import PostManager from "../../components/PostManager";
+import getMonthDayYear from "../../lib/getMonthDayYear";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [httpsSrcURL, setHttpsSrcURL] = useState('');
+
+  // get date
+  const todaysDate = getMonthDayYear();
 
   return (
     
@@ -131,19 +137,20 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
           padding="30px"
         >
-          <Typography
+          {/* <Typography
             variant="h5"
             fontWeight="600"
             sx={{ marginBottom: "15px" }}
           >
             Feedback
-          </Typography>
-          {/* <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box> */}
+          </Typography> */}
+          {/* <Box height="200px"> */}
+          <PostManager date={todaysDate} />  
+          {/* </Box> */}
         </Box>
       </Box>
       <CaddyDataFetch setHttpsSrcURL={setHttpsSrcURL} />
+      <PostCreation date={todaysDate} />
       {/* <SignOut /> */}
     </Box>
   );
