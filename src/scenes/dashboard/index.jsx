@@ -62,7 +62,7 @@ const Dashboard = () => {
 
         {/* ROW 2 */}
         <Box
-          gridColumn="span 8"
+          gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -87,6 +87,9 @@ const Dashboard = () => {
             <LineChart isDashboard={true} />
           </Box>
         </Box>
+
+
+        {/* ROW 3 */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -97,14 +100,13 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Activity by the Week
+            Weekly Activity
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />
           </Box>
         </Box>
 
-        {/* ROW 3 */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -121,18 +123,11 @@ const Dashboard = () => {
             mt="25px"
           >
             <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
           </Box>
         </Box>
+
         <Box
-          gridColumn="span 8"
+          gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"

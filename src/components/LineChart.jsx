@@ -1,11 +1,89 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
+import { useEffect, useState } from 'react';
+import { UserAuth } from './AuthCheck';
+
+// import { mockLineData as fakedata } from "../data/mockData";
+import { collection, query, orderBy, limit, where, getDocs, Timestamp } from 'firebase/firestore';
+import { db, auth } from '../lib/firebase';
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // Firebase activity data
+  // const uid = auth.currentUser.uid;
+  const { user, _ } = UserAuth(); //user.uid
+  const uid = user.uid;
+
+  const actRef = collection(db, 'users', `${uid}`, 'activity');
+
+  // Daily Chart
+  const [data, setData] = useState([]);
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  const startOfDay_timestamp = Timestamp.fromDate(startOfDay)
+  var rawData = [];
+
+  // console.log("start of day: ",startOfDay_timestamp)
+
+  function transformData(originalData) {
+    const newData = [
+      {
+        id: "dog",
+        color: "#4cceac",
+        data: originalData.map(item => ({
+          x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+          y: item.dog
+        })),
+      },
+      {
+        id: "cat",
+        color: "#a4a9fc",
+        data: originalData.map(item => ({
+          x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+          y: item.cat
+        })),
+      },
+      {
+        id: "person",
+        color: "#f1b9b7",
+        data: originalData.map(item => ({
+          x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+          y: item.person
+        })),
+      }
+    ];
+  
+    return newData;
+  }
+
+  const fetchData = async () => {
+    const q = query(
+      actRef,
+      where('timestamp', '>=', startOfDay_timestamp),
+      limit(1000),
+      orderBy('timestamp', 'desc')
+    );
+
+    try {
+      const querySnapshot = await getDocs(q);
+      rawData = querySnapshot.docs.map((doc) => doc.data()).reverse();
+      const transformedData = transformData(rawData);
+      setData(transformedData);
+      // console.log("data: ", transformedData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+  ////////////////////////////
 
   return (
     <ResponsiveLine
@@ -28,6 +106,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
               strokeWidth: 1,
             },
             text: {
+              fontSize: 4,
               fill: colors.grey[100],
             },
           },
@@ -60,9 +139,9 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
       axisBottom={{
         orient: "bottom",
         tickSize: 0,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "transportation", // added
+        tickPadding: 10,
+        tickRotation: -45,
+        legend: "Time of Day", //isDashboard ? undefined : "time", // added
         legendOffset: 36,
         legendPosition: "middle",
       }}
@@ -72,7 +151,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "count", // added
+        legend: isDashboard ? undefined : "Activity", // added
         legendOffset: -40,
         legendPosition: "middle",
       }}

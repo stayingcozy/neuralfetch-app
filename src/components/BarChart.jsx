@@ -4,8 +4,54 @@ import { tokens } from "../theme";
 import { mockBarData as data } from "../data/mockData";
 
 const BarChart = ({ isDashboard = false }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+
+    console.log("Bar chart fake data: ", data);
+
+    // Weekly Chart
+    // Get time frame per each day to query
+    // Map it out like daily (per day)
+    // Take the median of each day
+    // Highest category gets to be plotted (dog vs cat vs person)
+    // const [data, setData] = useState([]);
+    // const startOfDay = new Date();
+    // startOfDay.setHours(0, 0, 0, 0);
+    // const startOfDay_timestamp = Timestamp.fromDate(startOfDay)
+    // var rawData = [];
+
+
+  //   function transformData(originalData) {
+  //   const newData = [
+  //     {
+  //       dayOfWeek: "Sunday",
+  //       activity: originalData.map(item => ({
+  //         item.dog
+  //       })),
+  //       activityColor: "hsl(296, 70%, 50%)",
+  //       rest: ,
+  //       restColor:  "hsl(340, 70%, 50%)",
+  //     },
+  //     {
+  //       id: "cat",
+  //       color: "#a4a9fc",
+  //       data: originalData.map(item => ({
+  //         x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+  //         y: item.cat
+  //       })),
+  //     },
+  //     {
+  //       id: "person",
+  //       color: "#f1b9b7",
+  //       data: originalData.map(item => ({
+  //         x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+  //         y: item.person
+  //       })),
+  //     }
+  //   ];
+
+  //   return newData;
+  // }
 
   return (
     <ResponsiveBar
@@ -40,7 +86,7 @@ const BarChart = ({ isDashboard = false }) => {
         },
       }}
       keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="country"
+      indexBy="dayOfWeek"
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
