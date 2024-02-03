@@ -49,8 +49,8 @@ const Dashboard = () => {
         {/* ROW 1 */}
         
         <Box 
-          gridColumn="span 12"
-          gridRow="span 3"
+          gridColumn="span 8"
+          gridRow="span 2"
           backgroundColor={colors.primary[400]}
           display="flex"
         >
@@ -58,6 +58,22 @@ const Dashboard = () => {
             component="iframe" 
             src={httpsSrcURL}
           />
+        </Box>
+
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          p="30px"
+        >
+          <Typography variant="h5" fontWeight="600">
+            Activity & Rest
+          </Typography>
+          <Box m="1px">
+            <Box height="40vh">
+              <PieChart isDashboard={true} />
+            </Box>
+          </Box>
         </Box>
 
         {/* ROW 2 */}
@@ -107,7 +123,7 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -117,15 +133,15 @@ const Dashboard = () => {
             Activity & Rest
           </Typography>
           <Box m="1px">
-          <Box height="40vh">
-            <PieChart isDashboard={true} />
+            <Box height="40vh">
+              <PieChart isDashboard={true} />
+            </Box>
           </Box>
-        </Box>
-        </Box>
+        </Box> */}
 
         {/* ROW 4 */}
         <Box
-          gridColumn="span 12"
+          gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"

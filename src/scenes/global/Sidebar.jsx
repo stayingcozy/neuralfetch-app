@@ -55,7 +55,7 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#6870fa !important",
         },
-        height: "1510px",
+        height: "1110px",
       }}
     >
       <ProSidebar 
