@@ -90,7 +90,7 @@ const Dashboard = () => {
 
         {/* ROW 3 */}
         <Box
-          gridColumn="span 4"
+          gridColumn="span 8"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -126,7 +126,7 @@ const Dashboard = () => {
         </Box>
 
         <Box
-          gridColumn="span 4"
+          gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"

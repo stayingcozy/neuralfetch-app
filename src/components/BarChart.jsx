@@ -1,60 +1,129 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarData as data } from "../data/mockData";
+
+import { collection } from 'firebase/firestore';
+import { db, auth } from '../lib/firebase';
+
+import { useEffect, useState } from 'react';
+import { UserAuth } from './AuthCheck';
+
+// import { mockBarData as data } from "../data/mockData";
+import { getWeekDateNames, fetchWeekData } from '../lib/fetchFirebaseData';
 
 const BarChart = ({ isDashboard = false }) => {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
-    console.log("Bar chart fake data: ", data);
+  // console.log("Bar chart fake data: ", data);
 
-    // Weekly Chart
-    // Get time frame per each day to query
-    // Map it out like daily (per day)
-    // Take the median of each day
-    // Highest category gets to be plotted (dog vs cat vs person)
-    // seperate data range fetch (daily, weekly) into lib functions
-    //       and transform functions; Have one lib return them all and input into chart components
+  // Firebase activity data
+  // const uid = auth.currentUser.uid;
+  const { user, _ } = UserAuth(); //user.uid
+  const uid = user.uid;
 
-    // const [data, setData] = useState([]);
-    // const startOfDay = new Date();
-    // startOfDay.setHours(0, 0, 0, 0);
-    // const startOfDay_timestamp = Timestamp.fromDate(startOfDay)
-    // var rawData = [];
+  const actRef = collection(db, 'users', `${uid}`, 'activity');
+
+  // weekly Chart
+  const [data, setData] = useState([]);
+
+  // week days
+  let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  function transformData(originalData, dayNames) {
+    let newData = [];
+
+    for (let i=originalData.length-1; i>-1; i--) {
+      console.log("index: ", i);
+      console.log("originalData[i]: ", originalData[i]);
+
+      const cateData = [
+        {
+          id: "dog",
+          data: originalData[i].map(item => ({
+            x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+            y: item.dog
+          })),
+        },
+        {
+          id: "cat",
+          data: originalData[i].map(item => ({
+            x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+            y: item.cat
+          })),
+        },
+        {
+          id: "person",
+          data: originalData[i].map(item => ({
+            x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
+            y: item.person
+          })),
+        }
+      ];
+
+      let sumDog = 0;
+      let restSumDog = 0;
+      let sumCat = 0;
+      let restsumCat = 0;
+      let sumPerson = 0;
+      let restsumPerson = 0;
+      
+      cateData.forEach(obj => {
+        obj.data.forEach(item => {
+          if (obj.id === 'dog') {
+            if (item.y>1) {
+              sumDog += 1;
+            } else {
+              restSumDog += 1;
+            }
+          } else if (obj.id === 'cat') {
+            if (item.y>1) {
+              sumCat += 1;
+            } else {
+              restsumCat += 1;
+            }
+          } else if (obj.id === 'person') {
+            if (item.y>1) {
+              sumPerson += 1;
+            } else {
+              restsumPerson += 1;
+            }
+          }
+        });
+      });
+
+      let dayIndex = dayNames[i].getDay();
+      let dayName = weekDays[dayIndex];
 
 
-  //   function transformData(originalData) {
-  //   const newData = [
-  //     {
-  //       dayOfWeek: "Sunday",
-  //       activity: originalData.map(item => ({
-  //         item.dog
-  //       })),
-  //       activityColor: "hsl(296, 70%, 50%)",
-  //       rest: ,
-  //       restColor:  "hsl(340, 70%, 50%)",
-  //     },
-  //     {
-  //       id: "cat",
-  //       color: "#a4a9fc",
-  //       data: originalData.map(item => ({
-  //         x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
-  //         y: item.cat
-  //       })),
-  //     },
-  //     {
-  //       id: "person",
-  //       color: "#f1b9b7",
-  //       data: originalData.map(item => ({
-  //         x: item.timestamp.toDate().toLocaleTimeString('en-US'), 
-  //         y: item.person
-  //       })),
-  //     }
-  //   ];
+      newData.push({
+        dayOfWeek: dayName,
+        activity: sumPerson,
+        activityColor: "hsl(296, 70%, 50%)",
+        rest: restsumPerson,
+        restColor:  "hsl(340, 70%, 50%)",
+      })
+    }
 
-  //   return newData;
-  // }
+
+    return newData;
+  }
+
+  const fetchData = async () => {
+
+    try {
+      const rawData = await fetchWeekData(actRef);
+      const dayNames = getWeekDateNames();
+      const transformedData = transformData(rawData, dayNames); // index 0 is today's date
+      setData(transformedData);
+    } catch (error) {
+      console.error('Error fetching Line Chart data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <ResponsiveBar
@@ -88,8 +157,8 @@ const BarChart = ({ isDashboard = false }) => {
           },
         },
       }}
-      keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="country" // dayOfWeek
+      keys={["activity", "rest"]}
+      indexBy= "dayOfWeek" 
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}
@@ -124,16 +193,17 @@ const BarChart = ({ isDashboard = false }) => {
       axisBottom={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "country", // changed
+        tickRotation: -45,
+        legend: isDashboard ? undefined : "Day", // changed
         legendPosition: "middle",
         legendOffset: 32,
+        tickLabelFontSize: 8,
       }}
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "food", // changed
+        legend: isDashboard ? undefined : "Activity & Rest", // changed
         legendPosition: "middle",
         legendOffset: -40,
       }}
@@ -170,7 +240,7 @@ const BarChart = ({ isDashboard = false }) => {
       ]}
       role="application"
       barAriaLabel={function (e) {
-        return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
+        return e.id + ": " + e.formattedValue + " during day: " + e.indexValue;
       }}
     />
   );

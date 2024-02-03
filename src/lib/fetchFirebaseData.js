@@ -12,8 +12,8 @@ export async function fetchWeekData( actRef ) {
     let prevDay_ts;
     let qArray = [];
     for (let i = 0; i < weekLength; i++) {
-        console.log("i: ", i);
-        console.log("weekDaysTS[i]: ", weekDaysTS[i]);
+        // console.log("i: ", i);
+        // console.log("weekDaysTS[i]: ", weekDaysTS[i]);
         startOfDay_ts = weekDaysTS[i];
 
         if (i === 0) {
@@ -72,5 +72,23 @@ function getWeekDateRange() {
     }
 
     return weekDaysTS;
+}
+
+export function getWeekDateNames() {
+    
+        // Get date and its day index
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const daysAgo = today.getDay(); // get today's day of the week index (0-6)
+    
+        // Get the date for each day of the week
+        let weekDays = [];
+        for (let i = 0; i < (daysAgo + 1); i++) {
+            // Get each date for the week
+            weekDays.push(new Date());
+            weekDays[i].setDate(today.getDate() - i);
+        }
+    
+        return weekDays;
 }
   
