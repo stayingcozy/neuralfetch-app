@@ -20,6 +20,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import PostCreation from "../../components/PostCreation";
 import PostManager from "../../components/PostManager";
 import getMonthDayYear from "../../lib/getMonthDayYear";
+import PieChart from "../../components/PieChart";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -115,14 +116,11 @@ const Dashboard = () => {
           <Typography variant="h5" fontWeight="600">
             Activity & Rest
           </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="125" />
+          <Box m="1px">
+          <Box height="40vh">
+            <PieChart isDashboard={true} />
           </Box>
+        </Box>
         </Box>
 
         <Box

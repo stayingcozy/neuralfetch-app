@@ -1,5 +1,37 @@
 import { query, orderBy, limit, where, getDocs, Timestamp } from 'firebase/firestore';
 
+export async function fetchDayData( actRef ) {
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    // Convert to Timestamp
+    // const startOfWeek_timestamp = Timestamp.fromDate(startOfWeek)
+    const startOfDay_timestamp = Timestamp.fromDate(startOfDay)
+
+    // init data variable
+    var rawData = [];
+
+    // Setup the query the database for the week
+    const q = query(
+      actRef,
+      where('timestamp', '>=', startOfDay_timestamp),
+      limit(1000),
+      orderBy('timestamp', 'desc')
+    );
+
+    // Query the database
+    try {
+      const querySnapshot = await getDocs(q);
+      rawData = querySnapshot.docs.map((doc) => doc.data()).reverse();
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
+    return rawData;
+};
+
+
 
 export async function fetchWeekData( actRef ) {
 

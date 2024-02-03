@@ -6,7 +6,7 @@ import { UserAuth } from './AuthCheck';
 
 import { collection } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
-import { fetchWeekData } from '../lib/fetchFirebaseData';
+import { fetchDayData } from '../lib/fetchFirebaseData';
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
@@ -56,8 +56,10 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const fetchData = async () => {
 
     try {
-      const rawData = await fetchWeekData(actRef);
-      const transformedData = transformData(rawData[0]); // index 0 is today's date
+      const rawData = await fetchDayData(actRef);
+      const transformedData = transformData(rawData); // index 0 is today's date
+      console.log('transformedData:', transformedData);
+      // let filteredData = transformedData.filter(d => d.y !== null && d.y !== undefined);
       setData(transformedData);
     } catch (error) {
       console.error('Error fetching Line Chart data:', error);

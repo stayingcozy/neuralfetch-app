@@ -1,14 +1,11 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-
 import { collection } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
-
 import { useEffect, useState } from 'react';
-import { UserAuth } from './AuthCheck';
 
-// import { mockBarData as data } from "../data/mockData";
+import { UserAuth } from './AuthCheck';
 import { getWeekDateNames, fetchWeekData } from '../lib/fetchFirebaseData';
 
 const BarChart = ({ isDashboard = false }) => {
@@ -31,11 +28,15 @@ const BarChart = ({ isDashboard = false }) => {
   let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   function transformData(originalData, dayNames) {
-    let newData = [];
+    let newDataPerson = [];
+    let newDataDog = [];
+    let newDataCat = [];
+
+    let totalSum = [0, 0, 0];
 
     for (let i=originalData.length-1; i>-1; i--) {
-      console.log("index: ", i);
-      console.log("originalData[i]: ", originalData[i]);
+      // console.log("index: ", i);
+      // console.log("originalData[i]: ", originalData[i]);
 
       const cateData = [
         {
@@ -97,18 +98,43 @@ const BarChart = ({ isDashboard = false }) => {
       let dayIndex = dayNames[i].getDay();
       let dayName = weekDays[dayIndex];
 
+      totalSum[0] += sumPerson;
+      totalSum[1] += sumDog;
+      totalSum[2] += sumCat;
 
-      newData.push({
+
+      newDataPerson.push({
         dayOfWeek: dayName,
         activity: sumPerson,
-        activityColor: "hsl(296, 70%, 50%)",
+        activityColor: "hsl(96, 70%, 50%)",
         rest: restsumPerson,
-        restColor:  "hsl(340, 70%, 50%)",
+        restColor:  "hsl(229, 70%, 50%)",
+      })
+      newDataDog.push({
+        dayOfWeek: dayName,
+        activity: sumDog,
+        activityColor: "hsl(96, 70%, 50%)",
+        rest: restSumDog,
+        restColor:  "hsl(229, 70%, 50%)",
+      })
+      newDataCat.push({
+        dayOfWeek: dayName,
+        activity: sumCat,
+        activityColor: "hsl(96, 70%, 50%)",
+        rest: restsumCat,
+        restColor:  "hsl(229, 70%, 50%)",
       })
     }
 
+    let maxIndex = totalSum.reduce((maxIndex, current, index, arr) => current > arr[maxIndex] ? index : maxIndex, 0);
 
-    return newData;
+    if (maxIndex === 0) {
+      return newDataPerson;
+    } else if (maxIndex === 1) {  
+      return newDataDog;
+    } else {
+      return newDataCat;
+    }
   }
 
   const fetchData = async () => {
@@ -130,6 +156,8 @@ const BarChart = ({ isDashboard = false }) => {
   return (
     <ResponsiveBar
       data={data}
+      colors={["hsl(96, 70%, 50%)", "hsl(229, 70%, 50%)"]}
+      // colors={{ scheme: "nivo" }}
       theme={{
         // added
         axis: {
@@ -165,7 +193,6 @@ const BarChart = ({ isDashboard = false }) => {
       padding={0.3}
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
       defs={[
         {
           id: "dots",
