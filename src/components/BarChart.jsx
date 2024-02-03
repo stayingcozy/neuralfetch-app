@@ -67,23 +67,25 @@ const BarChart = ({ isDashboard = false }) => {
       let restsumCat = 0;
       let sumPerson = 0;
       let restsumPerson = 0;
+
+      let actRestCut = 1;
       
       cateData.forEach(obj => {
         obj.data.forEach(item => {
           if (obj.id === 'dog') {
-            if (item.y>1) {
+            if (item.y>actRestCut) {
               sumDog += 1;
             } else {
               restSumDog += 1;
             }
           } else if (obj.id === 'cat') {
-            if (item.y>1) {
+            if (item.y>actRestCut) {
               sumCat += 1;
             } else {
               restsumCat += 1;
             }
           } else if (obj.id === 'person') {
-            if (item.y>1) {
+            if (item.y>actRestCut) {
               sumPerson += 1;
             } else {
               restsumPerson += 1;
