@@ -4,52 +4,53 @@ import { query, orderBy, limit, where, getDocs, Timestamp } from 'firebase/fires
 export async function fetchWeekData( actRef ) {
 
     // Get the date at the start of the week for date range
-    const startOfDay = getWeekDateRange();
+    const weekDaysTS = getWeekDateRange();
 
-    // Set both to start of the day
-    // startOfWeek.setHours(0, 0, 0, 0);
-    // startOfDay.setHours(0, 0, 0, 0);
+    // Loop all queries qArray, each one await for docs and map 
+    let weekLength = weekDaysTS.length;
+    let startOfDay_ts;
+    let prevDay_ts;
+    let qArray = [];
+    for (let i = 0; i < weekLength; i++) {
+        console.log("i: ", i);
+        console.log("weekDaysTS[i]: ", weekDaysTS[i]);
+        startOfDay_ts = weekDaysTS[i];
 
-    // console.log('startOfWeek:', startOfWeek);
-    console.log('startOfDay:', startOfDay);
-
-    // Convert to Timestamp
-    // const startOfWeek_timestamp = Timestamp.fromDate(startOfWeek)
-    const startOfDay_timestamp = Timestamp.fromDate(startOfDay)
-
-    // init data variable
-    var rawData = [];
-
-    // Setup the query the database for the week
-    const q = query(
-      actRef,
-      where('timestamp', '>=', startOfDay_timestamp),
-      limit(1000),
-      orderBy('timestamp', 'desc')
-    );
-        
-    // Query the database
-    try {
-      const querySnapshot = await getDocs(q);
-      rawData = querySnapshot.docs.map((doc) => doc.data()).reverse();
-    } catch (error) {
-      console.error('Error fetching data:', error);
+        if (i === 0) {
+            qArray.push(
+                query(
+                actRef,
+                where('timestamp', '>=', startOfDay_ts),
+                limit(1000),
+                orderBy('timestamp', 'desc')
+            ));
+        }
+        else {
+            prevDay_ts = weekDaysTS[i - 1];
+            qArray.push(
+                query(
+                actRef,
+                where('timestamp', '>=', startOfDay_ts),
+                where('timestamp', '<', prevDay_ts),
+                limit(1000),
+                orderBy('timestamp', 'desc')
+            ));
+        }
     }
 
+    let rawData = [];
+    for (let i = 0; i < weekLength; i++) {
+        try {
+            const querySnapshot = await getDocs(qArray[i]);
+            rawData.push(querySnapshot.docs.map((doc) => doc.data()).reverse());
+          } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+        
     return rawData;
 };
 
-// function getDaysUntil(day) {
-//     const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-//     const index = weekDays.indexOf(day);
-  
-//     if (index !== -1) {
-//       return weekDays.slice(0, index + 1);
-//     } else {
-//       return [];
-//     }
-// }
-  
 function getWeekDateRange() {
 
     // Get date and its day index
@@ -59,18 +60,17 @@ function getWeekDateRange() {
 
     // Get the date for each day of the week
     let weekDays = [];
+    let weekDaysTS = [];
     for (let i = 0; i < (daysAgo + 1); i++) {
-        console.log('index:', i);
+        // Get each date for the week
         weekDays.push(new Date());
         weekDays[i].setDate(today.getDate() - i);
         weekDays[i].setHours(0, 0, 0, 0);
-        console.log('weekDays today:', weekDays[i]);
-    }
-    console.log('weekDays:', weekDays);
-    console.log('today:', today);
-    // const startOfWeek = new Date(today.getTime());
-    // startOfWeek.setDate(today.getDate() - daysAgo);
 
-    return today; // { startOfWeek, today };
+        // Add timestamp for firebase query
+        weekDaysTS.push(Timestamp.fromDate(weekDays[i]));
+    }
+
+    return weekDaysTS;
 }
   

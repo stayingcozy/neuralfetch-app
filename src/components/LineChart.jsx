@@ -57,7 +57,7 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
 
     try {
       const rawData = await fetchWeekData(actRef);
-      const transformedData = transformData(rawData);
+      const transformedData = transformData(rawData[0]); // index 0 is today's date
       setData(transformedData);
     } catch (error) {
       console.error('Error fetching Line Chart data:', error);
