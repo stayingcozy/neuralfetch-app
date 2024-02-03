@@ -50,7 +50,7 @@ const Dashboard = () => {
         
         <Box 
           gridColumn="span 12"
-          gridRow="span 4"
+          gridRow="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
         >
@@ -123,27 +123,18 @@ const Dashboard = () => {
         </Box>
         </Box>
 
+        {/* ROW 4 */}
         <Box
           gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"
         >
-          {/* <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Feedback
-          </Typography> */}
-          {/* <Box height="200px"> */}
           <PostManager date={todaysDate} />  
-          {/* </Box> */}
         </Box>
       </Box>
       <CaddyDataFetch setHttpsSrcURL={setHttpsSrcURL} />
       <PostCreation date={todaysDate} />
-      {/* <SignOut /> */}
     </Box>
   );
 };
