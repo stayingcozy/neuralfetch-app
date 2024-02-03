@@ -14,6 +14,9 @@ const BarChart = ({ isDashboard = false }) => {
     // Map it out like daily (per day)
     // Take the median of each day
     // Highest category gets to be plotted (dog vs cat vs person)
+    // seperate data range fetch (daily, weekly) into lib functions
+    //       and transform functions; Have one lib return them all and input into chart components
+
     // const [data, setData] = useState([]);
     // const startOfDay = new Date();
     // startOfDay.setHours(0, 0, 0, 0);
@@ -86,7 +89,7 @@ const BarChart = ({ isDashboard = false }) => {
         },
       }}
       keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="dayOfWeek"
+      indexBy="country" // dayOfWeek
       margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
       padding={0.3}
       valueScale={{ type: "linear" }}

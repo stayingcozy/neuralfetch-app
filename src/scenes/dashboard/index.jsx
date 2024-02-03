@@ -56,7 +56,6 @@ const Dashboard = () => {
           <CardMedia
             component="iframe" 
             src={httpsSrcURL}
-            allow="autoPlay"
           />
         </Box>
 

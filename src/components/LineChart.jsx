@@ -4,9 +4,9 @@ import { tokens } from "../theme";
 import { useEffect, useState } from 'react';
 import { UserAuth } from './AuthCheck';
 
-// import { mockLineData as fakedata } from "../data/mockData";
-import { collection, query, orderBy, limit, where, getDocs, Timestamp } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import { db, auth } from '../lib/firebase';
+import { fetchWeekData } from '../lib/fetchFirebaseData';
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
@@ -21,12 +21,6 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
 
   // Daily Chart
   const [data, setData] = useState([]);
-  const startOfDay = new Date();
-  startOfDay.setHours(0, 0, 0, 0);
-  const startOfDay_timestamp = Timestamp.fromDate(startOfDay)
-  var rawData = [];
-
-  // console.log("start of day: ",startOfDay_timestamp)
 
   function transformData(originalData) {
     const newData = [
@@ -60,21 +54,13 @@ const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   }
 
   const fetchData = async () => {
-    const q = query(
-      actRef,
-      where('timestamp', '>=', startOfDay_timestamp),
-      limit(1000),
-      orderBy('timestamp', 'desc')
-    );
 
     try {
-      const querySnapshot = await getDocs(q);
-      rawData = querySnapshot.docs.map((doc) => doc.data()).reverse();
+      const rawData = await fetchWeekData(actRef);
       const transformedData = transformData(rawData);
       setData(transformedData);
-      // console.log("data: ", transformedData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching Line Chart data:', error);
     }
   };
 
