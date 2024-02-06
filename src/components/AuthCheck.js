@@ -13,6 +13,9 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
   const googleSignIn = () => {
+    googleAuthProvider.setCustomParameters({
+      prompt: 'select_account'
+    })
     // signInWithPopup(auth, googleAuthProvider);
     signInWithRedirect(auth, googleAuthProvider)
   };

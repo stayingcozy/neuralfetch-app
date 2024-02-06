@@ -70,7 +70,7 @@ const Dashboard = () => {
             Activity & Rest
           </Typography>
           <Box m="1px">
-            <Box height="40vh">
+            <Box height="30vh">
               <PieChart isDashboard={true} />
             </Box>
           </Box>
